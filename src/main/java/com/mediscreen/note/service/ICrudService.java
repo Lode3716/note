@@ -11,11 +11,6 @@ public interface ICrudService<T> {
      */
     T add(T objet);
 
-    /**
-     * Read all the entries in bdd
-     * @return list object
-     */
-    List<T> readAll();
 
     /**
      * Update the objects in the database
@@ -23,7 +18,7 @@ public interface ICrudService<T> {
      * @param objet update
      * @return updating the object
      */
-    T update(Integer id,T objet);
+    T update(String id,T objet);
 
 
     /**
@@ -32,9 +27,4 @@ public interface ICrudService<T> {
      */
     void delete(Integer id);
 
-    /**
-     * Read object in the database
-     * @param id object to read
-     */
-    T readById(Integer id);
 }
