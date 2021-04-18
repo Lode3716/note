@@ -8,11 +8,20 @@ import java.util.List;
 /**
  * Interface allowing access to the database
  */
-public interface NoteRepository extends MongoRepository<Note,String> {
+public interface INoteRepository extends MongoRepository<Note,String> {
     /**
      * Find patient by id
      * @param id patient
      * @return List<Note>
      */
     List<Note> findByIdPatient(Integer id);
+
+
+    /**
+     * Find patient by id and note of practitioner
+     * @param id patient
+     * @param id practitioner
+     * @return patient note drafted by the practitioner
+     */
+    Note findByIdAndAndPractitioner(Integer id,String practitioner);
 }
