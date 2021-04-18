@@ -33,4 +33,14 @@ public class NoteDto {
     private LocalDate createDate;
 
     private LocalDate updateDate;
+
+    public NoteDto(Integer idPatient, String firstName, String lastName, String note, String practitioner, LocalDate createDate, LocalDate updateDate) {
+        this.idPatient = idPatient;
+        FirstName = firstName;
+        LastName = lastName;
+        this.note = note;
+        this.practitioner = practitioner;
+        this.createDate = createDate;
+        this.updateDate = updateDate;
+    }
 }
