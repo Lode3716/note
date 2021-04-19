@@ -62,12 +62,12 @@ public class NoteController {
     /**
      * Patient note to update
      *
-     * @param id      to update p
+     * @param id      to update
      * @param noteDto the entity update
      * @return noteDto when is update
      */
     @PutMapping("/{id}")
-    public ResponseEntity<NoteDto> updatePatient(@PathVariable("id") @NotBlank String id, @RequestBody @Valid NoteDto noteDto) {
+    public ResponseEntity<NoteDto> updateNotePatient(@PathVariable("id") @NotBlank String id, @RequestBody @Valid NoteDto noteDto) {
         log.info("PUT : /note/{}", id);
         NoteDto update;
         try {
