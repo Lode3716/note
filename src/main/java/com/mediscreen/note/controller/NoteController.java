@@ -62,7 +62,7 @@ public class NoteController {
     /**
      * Patient note to update
      *
-     * @param id         to update p
+     * @param id      to update p
      * @param noteDto the entity update
      * @return noteDto when is update
      */

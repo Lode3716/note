@@ -2,12 +2,14 @@ package com.mediscreen.note.repository;
 
 import com.mediscreen.note.domain.Note;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
  * Interface allowing access to the database
  */
+@Repository
 public interface INoteRepository extends MongoRepository<Note,String> {
     /**
      * Find patient by id
