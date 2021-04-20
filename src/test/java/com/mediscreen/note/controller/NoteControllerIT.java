@@ -19,7 +19,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -55,12 +54,12 @@ class NoteControllerIT {
     @BeforeEach
     public void setUp() {
         mvc = MockMvcBuilders.webAppContextSetup(context).build();
-        noteDto = new NoteDto(1,"Benoit","Laick","En recherche de perte de poids, et de sensation très forte","Medecin" ,null,null);
-        note = new Note(1,"Benoit","Laick","En recherche de perte de poids, et de sensation très forte","Medecin" ,LocalDate.now(),null);
+        noteDto = new NoteDto(1, "En recherche de perte de poids, et de sensation très forte", "Medecin", null, null);
+        note = new Note(1, "En recherche de perte de poids, et de sensation très forte", "Medecin", LocalDate.now(), null);
 
-        updateNoteDto = new NoteDto(1,"Benoit","Laick","En recherche de perte de poids, et en perdu énormément","Medecin" ,null,null);
+        updateNoteDto = new NoteDto(1, "En recherche de perte de poids, et en perdu énormément", "Medecin", null, null);
 
-        noteDtoFail = new NoteDto(null,"Benoit","Laick",null,null ,null,null);
+        noteDtoFail = new NoteDto();
     }
 
     @AfterEach
@@ -69,11 +68,11 @@ class NoteControllerIT {
                 .stream()
                 .findAny()
                 .ifPresent(findNote ->
-                        {
-                            repository.findById(findNote.getId())
-                                    .map(Note::getId)
-                                    .ifPresent(deleteNote -> repository.deleteById(deleteNote));
-                        });
+                {
+                    repository.findById(findNote.getId())
+                            .map(Note::getId)
+                            .ifPresent(deleteNote -> repository.deleteById(deleteNote));
+                });
 
         repository.findByIdPatient(note.getIdPatient())
                 .stream()
@@ -104,11 +103,9 @@ class NoteControllerIT {
                 .contentType(APPLICATION_JSON)
                 .accept(APPLICATION_JSON))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.lastName").value(noteDto.getLastName()))
-                .andExpect(jsonPath("$.firstName").value(noteDto.getFirstName()))
                 .andExpect(jsonPath("$.practitioner").value(noteDto.getPractitioner()))
                 .andExpect(jsonPath("$.note").value(noteDto.getNote()))
-                .andExpect(result->assertNotNull(jsonPath("$.createDate")))
+                .andExpect(result -> assertNotNull(jsonPath("$.createDate")))
                 .andExpect(result -> assertNotNull(jsonPath("$.id")));
     }
 
@@ -132,7 +129,7 @@ class NoteControllerIT {
     @DisplayName("Given a save patient in bdd,check if list return equals 2 patients")
     public void givenNoteByIdPatient_whenGETRequestFail_thenReturnNoteNotFound() throws Exception {
 
-        String url="/patHistory/".concat(String.valueOf(12345));
+        String url = "/patHistory/".concat(String.valueOf(12345));
 
         mvc.perform(MockMvcRequestBuilders.get(url)
                 .accept(APPLICATION_JSON))
@@ -145,9 +142,9 @@ class NoteControllerIT {
     @DisplayName("Given a save patient in bdd,check if list return equals 1 note")
     public void givenNoteByIdPatient_whenGETRequestSucess_thenReturnNoteSucess() throws Exception {
 
-        Note save=repository.save(note);
+        Note save = repository.save(note);
 
-        String url="/patHistory/".concat(String.valueOf(save.getIdPatient()));
+        String url = "/patHistory/".concat(String.valueOf(save.getIdPatient()));
 
         mvc.perform(MockMvcRequestBuilders.get(url)
                 .accept(APPLICATION_JSON))
@@ -160,21 +157,19 @@ class NoteControllerIT {
     @DisplayName("Given a update note in bdd,check if update is good")
     public void givenNoteByIdPatient_whenGETRequestUpadteNoteSucess_thenReturnNoteSucess() throws Exception {
 
-        Note save=repository.save(note);
+        Note save = repository.save(note);
 
-        String url="/patHistory/".concat(save.getId());
+        String url = "/patHistory/".concat(save.getId());
 
         mvc.perform(MockMvcRequestBuilders.put(url)
                 .content(asJsonString(updateNoteDto))
                 .contentType(APPLICATION_JSON)
                 .accept(APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.lastName").value(updateNoteDto.getLastName()))
-                .andExpect(jsonPath("$.firstName").value(updateNoteDto.getFirstName()))
                 .andExpect(jsonPath("$.practitioner").value(updateNoteDto.getPractitioner()))
                 .andExpect(jsonPath("$.note").value(updateNoteDto.getNote()))
                 .andExpect(jsonPath("$.id").value(save.getId()))
-                .andExpect(result->assertNotNull(jsonPath("$.updateDate")));
+                .andExpect(result -> assertNotNull(jsonPath("$.updateDate")));
     }
 
 
@@ -183,7 +178,7 @@ class NoteControllerIT {
     @DisplayName("Given a update note in bdd, but id not found ")
     public void givenNoteByIdPatient_whenGETRequestUpadteNoteFail_thenReturnNoteFail() throws Exception {
 
-        String url="/patHistory/".concat("12365478");
+        String url = "/patHistory/".concat("12365478");
 
         mvc.perform(MockMvcRequestBuilders.put(url)
                 .content(asJsonString(updateNoteDto))

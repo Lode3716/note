@@ -39,8 +39,6 @@ public class NoteServiceImp implements INoteService {
     @Override
     public NoteDto update(String id, NoteDto noteDto) {
         Note updateNote = existById(id);
-        updateNote.setNote(noteDto.getLastName());
-        updateNote.setFirstName(noteDto.getFirstName());
         updateNote.setNote(noteDto.getNote());
         updateNote.setPractitioner(noteDto.getPractitioner());
         updateNote.setUpdateDate(LocalDate.now());

@@ -1,8 +1,9 @@
 package com.mediscreen.note.domain;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotBlank;
@@ -10,7 +11,8 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Document(collection = "note")
@@ -21,9 +23,6 @@ public class Note implements Serializable {
     @NotNull(message = "Patient Id can't be empty")
     private Integer idPatient;
 
-    private String FirstName;
-
-    private String LastName;
 
     /**
      * Free form note with medical terminology containing all patient history.
@@ -45,10 +44,8 @@ public class Note implements Serializable {
     private LocalDate updateDate;
 
 
-    public Note(Integer idPatient, String firstName, String lastName, String note, String practitioner, LocalDate createDate, LocalDate updateDate) {
+    public Note(Integer idPatient, String note, String practitioner, LocalDate createDate, LocalDate updateDate) {
         this.idPatient = idPatient;
-        FirstName = firstName;
-        LastName = lastName;
         this.note = note;
         this.practitioner = practitioner;
         this.createDate = createDate;
