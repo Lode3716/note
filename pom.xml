@@ -12,7 +12,7 @@
 	<artifactId>note</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>note</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Microservice management of doctors' notes</description>
 	<properties>
 		<java.version>15</java.version>
 	</properties>
