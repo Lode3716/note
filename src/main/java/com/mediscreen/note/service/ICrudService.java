@@ -25,6 +25,6 @@ public interface ICrudService<T> {
      * Delete object in the database
      * @param id object to delete
      */
-    void delete(Integer id);
+    void delete(String id);
 
 }

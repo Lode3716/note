@@ -4,6 +4,7 @@ import com.mediscreen.note.dto.NoteDto;
 import com.mediscreen.note.service.INoteService;
 import com.mediscreen.note.service.exception.NoteNotFoundException;
 import lombok.extern.log4j.Log4j2;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -80,4 +81,24 @@ public class NoteController {
         return ResponseEntity.status(HttpStatus.OK).body(update);
     }
 
+
+    /**
+     * Patient note to delete
+     *
+     * @param id      to delete
+     * @param noteDto the entity update
+     * @return response ok
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteNotePatient(@PathVariable("id") @NotBlank String id)
+    {
+        log.info("DELETE : /note/{}", id);
+        try {
+             service.delete(id);
+        } catch (NoteNotFoundException noteNotFoundException) {
+            log.error("DELETE : /patHistory/{} - Not found : {}", noteNotFoundException.getMessage());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, noteNotFoundException.getMessage());
+        }
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 }
