@@ -80,4 +80,22 @@ public class NoteController {
         return ResponseEntity.status(HttpStatus.OK).body(update);
     }
 
+
+    /**
+     * Patient note to delete
+     *
+     * @param id      to delete
+     * @return response ok
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteNotePatient(@PathVariable("id") @NotBlank String id) {
+        log.info("DELETE : /note/{}", id);
+        try {
+            service.delete(id);
+        } catch (NoteNotFoundException noteNotFoundException) {
+            log.error("DELETE : /patHistory/{} - Not found : {}", noteNotFoundException.getMessage());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, noteNotFoundException.getMessage());
+        }
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 }

@@ -20,8 +20,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -176,7 +176,8 @@ class NoteControllerIT {
     @Test
     @Tag("UpdateNote")
     @DisplayName("Given a update note in bdd, but id not found ")
-    public void givenNoteByIdPatient_whenGETRequestUpadteNoteFail_thenReturnNoteFail() throws Exception {
+    public void givenNoteByIdPatient_whenGETRequestUpadteNoteFail_thenReturnNoteFail() throws Exception
+    {
 
         String url = "/patHistory/".concat("12365478");
 
@@ -186,5 +187,40 @@ class NoteControllerIT {
                 .accept(APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andExpect(result -> assertTrue(result.getResolvedException().getMessage().contains("There is no note with id :")));
+    }
+
+
+    @Test
+    @Tag("DeleteNote")
+    @DisplayName("Given patient note delete in bdd ")
+    public void givenNoteByIdPatient_whenGETRequestDelete_thenReturnOK() throws Exception
+    {
+        Note save = repository.save(note);
+        String url = "/patHistory/".concat(save.getId());
+
+        mvc.perform(MockMvcRequestBuilders.delete(url)
+                .content(asJsonString(updateNoteDto))
+                .contentType(APPLICATION_JSON)
+                .accept(APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        assumeFalse(repository.existsById(save.getId()));
+
+    }
+
+    @Test
+    @Tag("DeleteNote")
+    @DisplayName("Given patient note delete npt found in bdd ")
+    public void givenNoteByIdPatient_whenGETRequestDeleteNoteFail_thenReturnFail() throws Exception
+    {
+        String url = "/patHistory/".concat("azdfh123");
+
+        mvc.perform(MockMvcRequestBuilders.delete(url)
+                .content(asJsonString(updateNoteDto))
+                .contentType(APPLICATION_JSON)
+                .accept(APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(result -> assertTrue(result.getResolvedException().getMessage().contains("There is no note with id :")));
+
     }
 }

@@ -50,8 +50,8 @@ public class NoteServiceImp implements INoteService {
         List<NoteDto> noteList = new ArrayList<>();
         repository.findByIdPatient(id)
                 .stream()
-                .sorted(Comparator.comparing(Note::getCreateDate,Comparator.nullsLast(Comparator.reverseOrder())))
-                .sorted(Comparator.comparing(Note::getUpdateDate,Comparator.nullsLast(Comparator.reverseOrder())))
+                .sorted(Comparator.comparing(Note::getCreateDate, Comparator.nullsLast(Comparator.reverseOrder())))
+                .sorted(Comparator.comparing(Note::getUpdateDate, Comparator.nullsLast(Comparator.reverseOrder())))
                 .forEach(idPatient ->
                 {
                     noteList.add(noteJMapper.getDestination(idPatient));
@@ -77,7 +77,7 @@ public class NoteServiceImp implements INoteService {
     }
 
     @Override
-    public void delete(Integer id) {
-
+    public void delete(String id) {
+        repository.deleteById(existById(id).getId());
     }
 }
